@@ -1,0 +1,20 @@
+<div class="card-panel">
+  <%= form_tag("/users/create") do %>
+  <% if @error_message %>
+    <div class="red-text">
+      <%= @error_message %>
+    </div>
+  <% end %>
+  <p>ユーザー名</p>
+  <div class="input-field">
+    <input name="name" value="<%= @name %>" required="required">
+  </div>
+  <p>パスワード</p>
+  <div class="input-field">
+    <input name="password" type=password required="required">
+  </div>
+  <div class="input-field">
+    <input type="submit" value="登録" class="btn">
+  </div>
+<% end %>
+</div>

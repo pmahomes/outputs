@@ -1,0 +1,17 @@
+<div class="card-panel">
+  <%= form_tag("/posts/create") do %>
+  <% @post.errors.full_messages.each do |message| %>
+  <p class="red-text">
+    <%= message %>
+  </p>
+<% end %>
+  <div class="input-field">
+    <textarea class="materialize-textarea" name="content" placeholder="今どうしてる？" required="required">
+      <%= @post.content %>
+    </textarea>
+  </div>
+  <div class="input-field">
+    <input type="submit" value="投稿" class="btn">
+  </div>
+<% end %>
+</div>

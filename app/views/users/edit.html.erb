@@ -1,0 +1,30 @@
+<div class="card-panel">
+  <%= form_tag("/users/#{@user.id}/update", {multipart: true}) do %>
+  <% if @error_message %>
+    <div class="red-text">
+      <%= @error_message %>
+    </div>
+  <% end %>
+  <p>ユーザー名</p>
+  <div class="input-field">
+    <input name="name" value="<%= @user.name %>" required="required">
+  </div>
+  <p>プロフィール画像</p>
+  <div class="file-field input-field">
+    <div class="btn">
+      <span>ファイル</span>
+      <input name="image" type="file" value="<%= @user.name %>">
+    </div>
+    <div class="file-path-wrapper">
+      <input class="file-path validate" type="text">
+    </div>
+  </div>
+  <p>パスワード</p>
+  <div class="input-field">
+    <input name="password" type="password" required="required">
+  </div>
+  <div class="input-field">
+    <input class="btn" type="submit" value="保存">
+  </div>
+<% end %>
+</div>

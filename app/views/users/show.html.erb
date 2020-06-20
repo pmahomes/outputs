@@ -1,0 +1,129 @@
+<div class="card">
+  <div class="card-content">
+    <div class="row valign-wrapper">
+      <div class="col s2 xl1">
+        <img src="<%= "/user_images/#{@user.image_name}"%>" alt="" class="circle profile-img">
+      </div>
+      <div class="col s10 xl11">
+        <span class="card-title"><%= @user.name %>
+          <a class='dropdown-trigger right' href='#' data-target='dropdown1'>
+            <i class="material-icons">more_vert</i>
+          </a>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Dropdown Structure -->
+<ul id='dropdown1' class='dropdown-content'>
+  <% if @user.id == @current_user.id %>
+    <li>
+      <a class="grey-text" href="/users/<%=@user.id%>/edit">
+        <i class="material-icons">edit</i>Edit
+      </a>
+    </li>
+    <li>
+      <a class="red-text modal-trigger" href="#modal1">
+        <i class="material-icons">delete</i>Delete
+      </a>
+    </li>
+  <% end %>
+</ul>
+<!-- Modal Structure -->
+<div id="modal1" class="modal">
+  <div class="modal-content center-align">
+    <br>
+    <h3>本当に退会しますか？</h3>
+    <p>※退会した場合、あなたに関するすべてのデータは削除されます。</p>
+  </div>
+  <div class="modal-footer">
+    <a href="/users/<%=@user.id%>/destroy" class="waves-effect waves-green btn-flat red-text" data-method="post">はい</a>
+    <a class="modal-close waves-effect waves-green btn-flat">いいえ</a>
+  </div>
+</div>
+
+<div class="row">
+  <ul id="tabs-swipe-demo" class="tabs">
+    <li class="tab col s6">
+      <a href="#test-swipe-1">投稿 (<span><%= Post.where(user_id: @user.id).count %></span>posts)</a>
+    </li>
+    <li class="tab col s6">
+      <a href="#test-swipe-2">いいね！ (<span><%= Like.where(user_id: @user.id).count %></span>likes)</a>
+    </li>
+  </ul>
+  <div id="test-swipe-1" class="col s12">
+    <ul class="collection">
+      <% @user.posts.each do |post| %>
+        <li class="collection-item avatar">
+          <img src="<%= "/user_images/#{post.user.image_name}" %>" alt="" class="circle">
+          <a href="/users/<%= post.user_id %>" class="title black-text hover-text"><%= post.user.name %></a>
+          <span class="grey-text"><%= time_ago_in_words(post.created_at) %></span>
+          <br>
+          <a href="/posts/<%= post.id %>" class="black-text hover-text"><%= post.content %>"</a>
+          <div class="divider"></div>
+          <a href="#" class="secondary-content dropdown-trigger" data-target='dropdown1'>
+            <i class="material-icons">more_vert</i>
+          </a>
+          <% if Like.find_by(user_id: @current_user.id, post_id: post.id) %>
+            <a class="red-text" href="/likes/<%= post.id %>/destroy" date-method="post">
+              <i class="fas fa-thumbs-up"></i>
+            </a>
+          <% else %>
+            <a class="grey-text" href="/likes/<%= post.id %>/create" date-method="post">
+              <i class="far fa-thumbs-up"></i>
+            </a>
+          <% end %>
+          <%= Like.where(post_id: post.id).count %>
+        </li>
+        <!-- Dropdown Structure -->
+        <ul id='dropdown1' class='dropdown-content'>
+          <% if post.user_id == @current_user.id %>
+            <li>
+              <a class="red-text modal-trigger" href="#modal1">
+                <i class="material-icons">delete</i>Delete
+              </a>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+  </ul>
+</div>
+<div id="test-swipe-2" class="col s12">
+  <ul class="collection">
+    <% @likes.each do |like| %>
+      <% post = Post.find_by(id: like.post_id) %>
+        <li class="collection-item avatar">
+          <img src="<%= "/user_images/#{post.user.image_name}" %>" alt="" class="circle">
+          <a href="/users/<%= post.user_id %>" class="title black-text hover-text"><%= post.user.name %></a>
+          <span class="grey-text"><%= time_ago_in_words(post.created_at) %></span>
+          <br>
+          <a href="/posts/<%= post.id %>" class="black-text hover-text"><%= post.content %>"</a>
+          <div class="divider"></div>
+          <a href="#" class="secondary-content dropdown-trigger" data-target='dropdown1'>
+            <i class="material-icons">more_vert</i>
+          </a>
+          <% if Like.find_by(user_id: @current_user.id, post_id: post.id) %>
+            <a class="red-text" href="/likes/<%= post.id %>/destroy" date-method="post">
+              <i class="fas fa-thumbs-up"></i>
+            </a>
+          <% else %>
+            <a class="grey-text" href="/likes/<%= post.id %>/create" date-method="post">
+              <i class="far fa-thumbs-up"></i>
+            </a>
+          <% end %>
+          <%= Like.where(post_id: post.id).count %>
+        </li>
+        <!-- Dropdown Structure -->
+        <ul id='dropdown1' class='dropdown-content'>
+          <% if post.user_id == @current_user.id %>
+            <li>
+              <a class="red-text modal-trigger" href="#modal1">
+                <i class="material-icons">delete</i>Delete
+              </a>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
+  </ul>
+</div>
+</div>

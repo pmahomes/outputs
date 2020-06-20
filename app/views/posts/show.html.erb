@@ -1,0 +1,25 @@
+<div class="card">
+  <div class="card-content black-text">
+    <span class="card-title"><%= @user.name %></span>
+    <p><%= @post.content %></p>
+    <p><%= @post.created_at.to_s(:datetime_jp) %></p>
+  </div>
+
+  <div class="card-action">
+    <% if @user.id == @current_user.id %>
+    <a class="grey-text" href="/posts/<%= @post.id %>/destroy" date-method="post">
+      <i class="material-icons">delete</i>
+    </a>
+    <% end %>
+    <% if Like.find_by(user_id: @current_user.id, post_id: @post.id) %>
+      <a class="red-text" href="/likes/<%= @post.id %>/destroy" date-method="post">
+        <i class="fas fa-thumbs-up"></i>
+      </a>
+    <% else %>
+      <a class="grey-text" href="/likes/<%= @post.id %>/create" date-method="post">
+        <i class="far fa-thumbs-up"></i>
+      </a>
+    <% end %>
+    <%= @likes_count %>
+  </div>
+</div>

@@ -1,0 +1,46 @@
+<div class="card-panel">
+  <%= form_tag("/posts/create") do %>
+  <div class="input-field">
+    <textarea class="materialize-textarea" name="content" placeholder="今どうしてる？" required="required"></textarea>
+  </div>
+  <div class="input-field">
+    <input type="submit" value="投稿" class="btn">
+  </div>
+<% end %>
+</div>
+
+<ul class="collection">
+<% @posts.each do |post| %>
+<li class="collection-item avatar">
+  <img src="<%= "/user_images/#{post.user.image_name}" %>" alt="" class="circle">
+  <a href="/users/<%= post.user_id %>" class="title black-text hover-text"><%= post.user.name %></a>
+  <span class="grey-text"><%= time_ago_in_words(post.created_at) %></span>
+  <br>
+  <a href="/posts/<%= post.id %>" class="black-text hover-text"><%= post.content %></a>
+  <div class="divider"></div>
+  <a href="#" class="secondary-content dropdown-trigger" data-target='dropdown1'>
+    <i class="material-icons">more_vert</i>
+  </a>
+  <% if Like.find_by(user_id: @current_user.id, post_id: post.id) %>
+    <a class="red-text" href="/likes/<%= post.id %>/destroy" date-method="post">
+      <i class="fas fa-thumbs-up"></i>
+    </a>
+  <% else %>
+    <a class="grey-text" href="/likes/<%= post.id %>/create" date-method="post">
+      <i class="far fa-thumbs-up"></i>
+    </a>
+  <% end %>
+  <%= Like.where(post_id: post.id).count %>
+</li>
+<!-- Dropdown Structure -->
+<ul id='dropdown1' class='dropdown-content'>
+  <% if post.user_id == @current_user.id %>
+    <li>
+      <a class="red-text modal-trigger" href="/posts/<%= post.id %>/destroy" date-method="post" >
+        <i class="material-icons">delete</i>Delete
+      </a>
+    </li>
+  <% end %>
+</ul>
+<% end %>
+</ul>
